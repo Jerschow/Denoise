@@ -1,22 +1,23 @@
 import h5py
 import numpy as np
-import os
-
-
-def overwrite(write_file_name):
-	os.system('rm ' + write_file_name)
-	os.system('touch ' + write_file_name)
 
 
 def store(write_file_name, read_file, data_name, data):
-	overwrite(write_file_name)
 	write_file = h5py.File(write_file_name, 'w')
 	for key in read_file:
 		if key == data_name:
-			#making an nd array with same dimensions as the one in read_file[data]
-			write_file.create_dataset(data_name, data = data)
+			#making an nd array with same dimensions as the one in read_file[data] (in a try block because generates an error I don't know how to fix)
+			write_file[data_name] = data
+			'''worked = False
+			while not worked:
+				try:
+					worked = True
+					write_file[data_name] = data
+				except Error:
+					worked = False
+					print('dsf')'''
 		else:
-			write_file.create_dataset(key, read_file[key])
+			write_file[key] = read_file[key]
 	
 	write_file.close()
 
